@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kontak — Pempek Mak Cik</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- =====================================================
+       CSS Khusus Halaman Contact
+       Layout: 2 kolom — info kiri + form kanan
+       ===================================================== -->
+  <style>
+
+    /* --- Page Header minimal --- */
+    .contact-header {
+      padding: 130px 0 60px;
+      background: var(--clr-cream);
+      border-bottom: 2px solid var(--clr-cream-dk);
+      text-align: center;
+    }
+    .contact-header h1 {
+      font-family: var(--ff-heading);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      color: var(--clr-dark);
+      margin: .5rem 0 .8rem;
+    }
+    .contact-header p {
+      color: var(--clr-muted);
+      font-size: 1.05rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* --- LAYOUT UTAMA KONTAK --- */
+    .contact-section { padding: 80px 0 100px; }
+
+    /* Grid 2 kolom: info kiri + form kanan */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 3.5rem;
+      align-items: start;
+    }
+
+
+    /* ── PANEL INFO KIRI ───────────────────────────────── */
+    .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    /* Judul panel */
+    .contact-info__heading {
+      font-family: var(--ff-heading);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--clr-dark);
+      margin-bottom: .3rem;
+    }
+    .contact-info__sub {
+      font-size: .93rem;
+      color: var(--clr-muted);
+      margin-bottom: 1rem;
+    }
+
+    /* Kartu info tunggal (alamat, jam, telepon) */
+    .info-card {
+      display: flex;
+      gap: 1rem;
+      padding: 1.3rem;
+      background: var(--clr-white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      align-items: flex-start;
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+    .info-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateX(5px);
+    }
+    .info-card__icon {
+      width: 46px; height: 46px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      background: rgba(192,57,43,.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+    .info-card__text h4 {
+      font-weight: 600;
+      font-size: .9rem;
+      color: var(--clr-dark);
+      margin-bottom: .25rem;
+    }
+    .info-card__text p,
+    .info-card__text a {
+      font-size: .87rem;
+      color: var(--clr-muted);
+      line-height: 1.6;
+      transition: color var(--transition);
+    }
+    .info-card__text a:hover { color: var(--clr-primary); }
+
+    /* Tombol WhatsApp besar */
+    .wa-big {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.3rem 1.5rem;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      border-radius: var(--radius);
+      color: var(--clr-white);
+      box-shadow: 0 6px 24px rgba(37,211,102,.3);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .wa-big:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(37,211,102,.4);
+    }
+    .wa-big__icon { font-size: 2.5rem; }
+    .wa-big__text strong {
+      display: block;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+    .wa-big__text span { font-size: .82rem; opacity: .85; }
+
+    /* Peta placeholder (iframe embed) */
+    .map-embed {
+      width: 100%;
+      height: 200px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 3px solid var(--clr-cream-dk);
+      box-shadow: var(--shadow-sm);
+    }
+    .map-embed iframe {
+      width: 100%; height: 100%;
+      border: none;
+    }
+    /* Jika iframe tidak muat, fallback */
+    .map-placeholder {
+      width: 100%;
+      height: 200px;
+      background: var(--clr-cream-dk);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      color: var(--clr-muted);
+      gap: .5rem;
+      border: 2px dashed var(--clr-primary);
+    }
+    .map-placeholder .map-icon { font-size: 2.5rem; }
+
+    /* Jam operasional tabel */
+    .hours-table {
+      width: 100%;
+      background: var(--clr-white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .hours-table__head {
+      padding: .9rem 1.2rem;
+      background: var(--clr-primary);
+      color: var(--clr-white);
+      font-weight: 600;
+      font-size: .9rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      padding: .7rem 1.2rem;
+      border-bottom: 1px solid var(--clr-cream-dk);
+      font-size: .87rem;
+    }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-row__day { color: var(--clr-text); font-weight: 500; }
+    .hours-row__time { color: var(--clr-primary); font-weight: 600; }
+    .hours-row.closed .hours-row__time { color: var(--clr-muted); }
+
+
+    /* ── FORM KONTAK ───────────────────────────────────── */
+    .contact-form-wrap {
+      background: var(--clr-white);
+      border-radius: calc(var(--radius) * 1.5);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
+    }
+    .form-heading {
+      font-family: var(--ff-heading);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--clr-dark);
+      margin-bottom: .4rem;
+    }
+    .form-sub { font-size: .9rem; color: var(--clr-muted); margin-bottom: 2rem; }
+
+    /* Grup input */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-group { display: flex; flex-direction: column; margin-bottom: 1.3rem; }
+
+    .form-group label {
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--clr-text);
+      margin-bottom: .45rem;
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+
+    /* Gaya input & textarea */
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: .75rem 1rem;
+      border: 2px solid var(--clr-cream-dk);
+      border-radius: 8px;
+      font-family: var(--ff-body);
+      font-size: .92rem;
+      color: var(--clr-text);
+      background: var(--clr-cream);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+      resize: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--clr-primary);
+      box-shadow: 0 0 0 3px rgba(192,57,43,.12);
+      background: var(--clr-white);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: #b0958e; }
+
+    /* Tombol kirim form */
+    .form-submit {
+      width: 100%;
+      padding: .9rem;
+      background: var(--clr-primary);
+      color: var(--clr-white);
+      border: none;
+      border-radius: 50px;
+      font-family: var(--ff-body);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      margin-top: .5rem;
+    }
+    .form-submit:hover {
+      background: var(--clr-primary-dk);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(192,57,43,.35);
+    }
+
+    /* Pesan sukses setelah kirim */
+    .form-success {
+      display: none;
+      background: #e8f8ee;
+      border: 2px solid #25D366;
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      margin-top: 1rem;
+      color: #1a6b3a;
+      font-size: .93rem;
+      font-weight: 500;
+      text-align: center;
+      gap: .5rem;
+    }
+
+    /* Peringatan kecil di bawah form */
+    .form-note {
+      font-size: .78rem;
+      color: var(--clr-muted);
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+
+    /* --- FAQ SINGKAT --- */
+    .faq { background: var(--clr-cream-dk); padding: 80px 0; }
+    .faq__header { text-align: center; margin-bottom: 3rem; }
+
+    .faq__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem;
+    }
+
+    .faq-item {
+      background: var(--clr-white);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      border-left: 4px solid transparent;
+      transition: border-color var(--transition);
+      cursor: pointer;
+    }
+    .faq-item:hover { border-left-color: var(--clr-primary); }
+
+    .faq-item__q {
+      font-weight: 700;
+      font-size: .95rem;
+      color: var(--clr-dark);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: .5rem;
+      margin-bottom: .6rem;
+    }
+    .faq-item__q::after {
+      content: '+';
+      font-size: 1.3rem;
+      color: var(--clr-primary);
+      flex-shrink: 0;
+      transition: transform var(--transition);
+    }
+    .faq-item.open .faq-item__q::after { transform: rotate(45deg); }
+
+    .faq-item__a {
+      display: none;
+      font-size: .87rem;
+      color: var(--clr-muted);
+      line-height: 1.7;
+    }
+    .faq-item.open .faq-item__a { display: block; }
+
+
+    /* --- Responsive --- */
+    @media (max-width: 900px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .faq__grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 576px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =====================================================
+       NAVBAR
+       ===================================================== -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar__logo">
+      Pempek <span>Mak Cik</span>
+    </a>
+    <button class="navbar__toggle" id="navToggle" aria-label="Buka menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar__links" id="navLinks">
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="about.html">Tentang Kami</a></li>
+      <li><a href="contact.html" class="active">Kontak</a></li>
+      <li>
+        <a href="https://wa.me/6285311451127?text=Halo%20Mak%20Cik,%20saya%20mau%20pesan%20pempek!"
+           target="_blank" class="navbar__cta">📲 Pesan Sekarang</a>
+      </li>
+    </ul>
+  </nav>
+
+
+  <!-- =====================================================
+       HEADER HALAMAN KONTAK
+       ===================================================== -->
+  <header class="contact-header">
+    <div class="container">
+      <span class="section-label">Kami Senang Mendengar dari Anda</span>
+      <h1>Hubungi Kami</h1>
+      <p>Ada pertanyaan, masukan, atau ingin memesan dalam jumlah besar? Kami siap melayani!</p>
+    </div>
+  </header>
+
+
+  <!-- =====================================================
+       SECTION UTAMA — Info + Form
+       ===================================================== -->
+  <section class="contact-section">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- ── KOLOM KIRI: Informasi ─────────────────── -->
+        <div class="contact-info">
+          <div>
+            <h2 class="contact-info__heading">Informasi Kontak</h2>
+            <p class="contact-info__sub">Temukan kami atau langsung hubungi melalui saluran di bawah ini.</p>
+          </div>
+
+          <!-- Tombol WhatsApp besar -->
+          <a href="https://wa.me/6285311451127?text=Halo%20Mak%20Cik,%20saya%20ingin%20bertanya!"
+             target="_blank" class="wa-big">
+            <div class="wa-big__icon">📲</div>
+            <div class="wa-big__text">
+              <strong>Chat via WhatsApp</strong>
+              <span>0853-1145-1127 — Respon cepat!</span>
+            </div>
+          </a>
+
+          <!-- Alamat -->
+          <div class="info-card">
+            <div class="info-card__icon">📍</div>
+            <div class="info-card__text">
+              <h4>Alamat Toko</h4>
+              <p>Desa Talang Belido, RT 05/RW 00<br> Sungai Gelam, Muaro Jambi 36129</p>
+            </div>
+          </div>
+
+          <!-- Telepon -->
+          <div class="info-card">
+            <div class="info-card__icon">📞</div>
+            <div class="info-card__text">
+              <h4>Telepon / WhatsApp</h4>
+              <a href="https://wa.me/6285311451127" target="_blank">0853-1145-1127 (WhatsApp)</a><br>
+              <a href="tel:+62741123456">0741-123456 (Telp. toko)</a>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="info-card">
+            <div class="info-card__icon">✉️</div>
+            <div class="info-card__text">
+              <h4>Email</h4>
+              <a href="mailto:info@pempekMakCik.com">info@pempekMakCik.com</a>
+            </div>
+          </div>
+
+          <!-- Jam operasional -->
+          <div class="hours-table">
+            <div class="hours-table__head">🕐 Jam Operasional</div>
+            <div class="hours-row">
+              <span class="hours-row__day">Senin – Jumat</span>
+              <span class="hours-row__time">08.00 – 20.00</span>
+            </div>
+            <div class="hours-row">
+              <span class="hours-row__day">Sabtu</span>
+              <span class="hours-row__time">08.00 – 21.00</span>
+            </div>
+            <div class="hours-row">
+              <span class="hours-row__day">Minggu</span>
+              <span class="hours-row__time">09.00 – 18.00</span>
+            </div>
+            <div class="hours-row closed">
+              <span class="hours-row__day">Hari Besar Nasional</span>
+              <span class="hours-row__time">Tutup</span>
+            </div>
+          </div>
+
+          <!-- Peta placeholder -->
+          <div class="map-placeholder">
+            <div class="map-icon">🗺️</div>
+            <strong>Desa Talang Belido, RT 05/RW 00,Sungai Gelam, Muaro Jambi 36129</strong>
+            <small>Klik untuk buka di Google Maps</small>
+          </div>
+
+        </div><!-- /contact-info -->
+
+
+        <!-- ── KOLOM KANAN: Form Kontak ──────────────── -->
+        <div class="contact-form-wrap">
+          <h2 class="form-heading">Kirim Pesan</h2>
+          <p class="form-sub">
+            Isi formulir di bawah ini dan kami akan membalas dalam 1×24 jam kerja.
+            Untuk respons lebih cepat, gunakan WhatsApp di atas.
+          </p>
+
+          <!-- Form — aksi fiktif, dicegat oleh JS -->
+          <form id="contactForm" action="#" method="POST" novalidate>
+
+            <!-- Baris 1: Nama + Telepon -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="nama">👤 Nama Lengkap <span style="color:var(--clr-primary)">*</span></label>
+                <input type="text" id="nama" name="nama"
+                       placeholder="Contoh: Budi Santoso" required />
+              </div>
+              <div class="form-group">
+                <label for="telp">📱 No. Telepon / WA <span style="color:var(--clr-primary)">*</span></label>
+                <input type="tel" id="telp" name="telp"
+                       placeholder="Contoh: 0812-3456-7890" required />
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label for="email">✉️ Email</label>
+              <input type="email" id="email" name="email"
+                     placeholder="Contoh: nama@email.com" />
+            </div>
+
+            <!-- Keperluan -->
+            <div class="form-group">
+              <label for="keperluan">📋 Keperluan <span style="color:var(--clr-primary)">*</span></label>
+              <select id="keperluan" name="keperluan" required>
+                <option value="" disabled selected>-- Pilih keperluan --</option>
+                <option value="pesan">🛍️ Pemesanan Pempek</option>
+                <option value="catering">🍽️ Catering / Acara</option>
+                <option value="kerjasama">🤝 Kerjasama / Mitra</option>
+                <option value="kritik">💬 Saran & Masukan</option>
+                <option value="lain">❓ Lainnya</option>
+              </select>
+            </div>
+
+            <!-- Pesan -->
+            <div class="form-group">
+              <label for="pesan">💬 Pesan / Keterangan <span style="color:var(--clr-primary)">*</span></label>
+              <textarea id="pesan" name="pesan" rows="5"
+                        placeholder="Tuliskan pesan, pertanyaan, atau detail pesanan Anda di sini..."
+                        required></textarea>
+            </div>
+
+            <!-- Tombol Kirim -->
+            <button type="submit" class="form-submit">
+              📨 Kirim Pesan Sekarang
+            </button>
+
+            <!-- Tombol alternatif WA -->
+            <a href="https://wa.me/6285311451127?text=Halo%20Mak%20Cik!"
+               target="_blank"
+               class="btn btn-wa"
+               style="width:100%; justify-content:center; margin-top:.8rem; border-radius:50px;">
+              📲 Atau Langsung via WhatsApp
+            </a>
+
+            <!-- Pesan sukses (tersembunyi, tampil saat submit) -->
+            <div class="form-success" id="formSuccess">
+              ✅ Pesan Anda berhasil terkirim! Kami akan menghubungi Anda segera.
+            </div>
+
+            <!-- Catatan kecil -->
+            <p class="form-note">
+              🔒 Tenang saja gan, informasi kalian semua akan aman dengan kami. Kami tidak akan menyebarkan data pribadi kalian.
+            </p>
+
+          </form>
+        </div><!-- /contact-form-wrap -->
+
+      </div><!-- /contact-grid -->
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       FAQ — pertanyaan yang sering ditanyakan
+       ===================================================== -->
+  <section class="faq">
+    <div class="container">
+      <div class="faq__header">
+        <span class="section-label">Pertanyaan Umum</span>
+        <h2 class="section-title">FAQ — <span>Sering Ditanyakan</span></h2>
+      </div>
+
+      <div class="faq__grid">
+
+        <!-- Pertanyaan 1 -->
+        <div class="faq-item">
+          <div class="faq-item__q">Min bisa anterin ke rumah ga ya pempeknyaa??</div>
+          <div class="faq-item__a">
+            Bisaa dong gann! Kami akan melayani pesan antar ke seluruh area Kota Jambi.
+            Hubungi kami via WhatsApp untuk informasi ongkos kirim dan estimasi waktu pengiriman.
+          </div>
+        </div>
+
+        <!-- Pertanyaan 2 -->
+        <div class="faq-item">
+          <div class="faq-item__q">Biso pesen extra cukonyo dak yo minn??</div>
+          <div class="faq-item__a">
+            bisa banget gaiss, tinggal kalian request aja mau berapa banyak cukonya dan mau tingkat kepedasan yang mana!
+          </div>
+        </div>
+
+        <!-- Pertanyaan 3 -->
+        <div class="faq-item">
+          <div class="faq-item__q">Min bisa pesan untuk acara / catering gitu ga yaaa?</div>
+          <div class="faq-item__a">
+            Bisa donggg! Kami melayani catering untuk berbagai acara seperti arisan, pernikahan, ulang tahun,
+            dan acara perusahaan. Hubungi kami minimal 3 hari sebelum acara yaa gaiss, supaya tidak terburu buru ya gengs.
+          </div>
+        </div>
+
+        <!-- Pertanyaan 4 -->
+        <div class="faq-item">
+          <div class="faq-item__q">Biso bayar pakek apo be minn??</div>
+          <div class="faq-item__a">
+            Kami bisa menerima pembayaran tunai (COD), transfer bank (BRI, BCA, Mandiri),
+            dan dompet digital (OVO, GoPay, DANA, ShopeePay).
+          </div>
+        </div>
+
+        <!-- Pertanyaan 5 -->
+        <div class="faq-item">
+          <div class="faq-item__q">Biso tahan berapo lamo ni min pempeknyoo kalo abis di beli??</div>
+          <div class="faq-item__a">
+            Pempek segar  bisa tahan hingga 2 hari di suhu ruang dan 1 minggu di kulkas.
+            Untuk frozen (bekukan), tahan hingga 1 bulan. Kami juga menyediakan pempek frozen untuk yang
+            pengirimannya di luar kota.
+          </div>
+        </div>
+
+        <!-- Pertanyaan 6 -->
+        <div class="faq-item">
+          <div class="faq-item__q">bisoo rikues tingkat kepedasan buat cukonyo dak min??</div>
+          <div class="faq-item__a">
+            bisa bangett! Kuah cuko kami tersedia dalam 3 level kepedasan: ringan, sedang, dan pedas.
+            Anda bisa menyebutkan preferensi level pedas saat memesan.
+          </div>
+        </div>
+
+      </div><!-- /faq__grid -->
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <h3>Pempek Mak Cik</h3>
+          <p>Menghadirkan cita rasa Pempek Palembang yang autentik dan lezat sejak tahun 2025.</p>
+        </div>
+        <div class="footer__col">
+          <h4>Navigasi</h4>
+          <a href="index.html">Beranda</a>
+          <a href="menu.html">Menu Kami</a>
+          <a href="about.html">Tentang Kami</a>
+          <a href="contact.html">Kontak</a>
+        </div>
+        <div class="footer__col">
+          <h4>Kontak</h4>
+          <a href="https://wa.me/6285311451127" target="_blank">📲 0853-1145-1127</a>
+          <a href="#">📍 Desa Talang Belido, Sungai Gelam </a>
+          <a href="#">🕐 Buka: 08.00 – 20.00 WIB</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2025 <span>Pempek Mak Cik</span>. Hak Cipta Dilindungi.</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- =====================================================
+       SCRIPT — navbar, form submit, FAQ accordion
+       ===================================================== -->
+  <script>
+    // --- Toggle navbar mobile ---
+    const toggle = document.getElementById('navToggle');
+    const links  = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+
+    // --- Form submit simulasi (tanpa backend) ---
+    const form    = document.getElementById('contactForm');
+    const success = document.getElementById('formSuccess');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault(); // Cegah reload halaman
+
+      // Validasi sederhana: cek field wajib
+      const nama     = form.querySelector('#nama').value.trim();
+      const telp     = form.querySelector('#telp').value.trim();
+      const keperluan = form.querySelector('#keperluan').value;
+      const pesan    = form.querySelector('#pesan').value.trim();
+
+      if (!nama || !telp || !keperluan || !pesan) {
+        alert('⚠️ Harap isi semua field yang bertanda bintang (*).');
+        return;
+      }
+
+      // Tampilkan pesan sukses
+      success.style.display = 'block';
+      form.reset();
+
+      // Sembunyikan pesan sukses setelah 5 detik
+      setTimeout(() => { success.style.display = 'none'; }, 5000);
+
+      // Scroll ke pesan sukses
+      success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    // --- FAQ Accordion ---
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        // Tutup semua item
+        faqItems.forEach(i => i.classList.remove('open'));
+        // Buka yang diklik (kecuali sudah terbuka)
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
+
+</body>
+</html>

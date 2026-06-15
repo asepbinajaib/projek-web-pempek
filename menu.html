@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu — Pempek Mak Cik</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- =====================================================
+       CSS Khusus Halaman Menu
+       Layout: Filter kategori + Grid kartu menu
+       ===================================================== -->
+  <style>
+    /* --- Page Header Banner --- */
+    .page-header {
+      padding: 130px 0 70px;
+      background: linear-gradient(135deg, var(--clr-dark) 0%, var(--clr-brown) 100%);
+      text-align: center;
+      color: var(--clr-white);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Dekorasi teks besar di latar */
+    .page-header::before {
+      content: 'MENU';
+      position: absolute;
+      font-family: var(--ff-heading);
+      font-size: 20vw;
+      font-weight: 900;
+      color: rgba(255,255,255,.04);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .page-header__label {
+      font-family: var(--ff-accent);
+      font-size: 1.2rem;
+      color: var(--clr-accent);
+      display: block;
+      margin-bottom: .5rem;
+    }
+    .page-header h1 {
+      font-family: var(--ff-heading);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+    }
+    .page-header p {
+      margin-top: .8rem;
+      color: rgba(255,255,255,.65);
+      font-size: 1rem;
+    }
+
+    /* --- Filter Kategori --- */
+    .filter-bar {
+      background: var(--clr-white);
+      box-shadow: var(--shadow-sm);
+      padding: 1.2rem 0;
+      position: sticky;
+      top: 72px;
+      z-index: 100;
+    }
+    .filter-bar__inner {
+      display: flex;
+      gap: .8rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filter-bar__label {
+      font-weight: 600;
+      font-size: .85rem;
+      color: var(--clr-muted);
+      margin-right: .4rem;
+    }
+
+    /* Tombol filter */
+    .filter-btn {
+      padding: .45rem 1.1rem;
+      border-radius: 50px;
+      border: 2px solid var(--clr-cream-dk);
+      background: transparent;
+      font-family: var(--ff-body);
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--clr-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--clr-primary);
+      border-color: var(--clr-primary);
+      color: var(--clr-white);
+    }
+
+    /* --- Grid Menu Utama --- */
+    .menu-section { padding: 60px 0 90px; }
+
+    /* Judul kategori separator */
+    .category-title {
+      font-family: var(--ff-heading);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--clr-dark);
+      margin-bottom: 1.5rem;
+      padding-bottom: .8rem;
+      border-bottom: 2px solid var(--clr-cream-dk);
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
+
+    /* --- Kartu Menu Detail --- */
+    .card {
+      background: var(--clr-white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Gambar kartu */
+    .card__img-wrap { position: relative; }
+    .card__img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Badge "Terlaris" */
+    .card__badge {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: var(--clr-primary);
+      color: var(--clr-white);
+      font-size: .72rem;
+      font-weight: 700;
+      padding: .25rem .7rem;
+      border-radius: 50px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    /* Isi teks kartu */
+    .card__body {
+      padding: 1.3rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .card__name {
+      font-family: var(--ff-heading);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--clr-dark);
+      margin-bottom: .4rem;
+    }
+    .card__desc {
+      font-size: .87rem;
+      color: var(--clr-muted);
+      line-height: 1.6;
+      flex: 1;
+      margin-bottom: 1rem;
+    }
+    .card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+    .card__price {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--clr-primary);
+    }
+    .card__price small {
+      font-size: .75rem;
+      color: var(--clr-muted);
+      font-weight: 400;
+    }
+
+    /* Tombol pesan per item */
+    .card__order {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: #25D366;
+      color: var(--clr-white);
+      padding: .45rem 1rem;
+      border-radius: 50px;
+      font-size: .82rem;
+      font-weight: 600;
+      transition: background var(--transition), transform var(--transition);
+      white-space: nowrap;
+    }
+    .card__order:hover {
+      background: #1ebe5d;
+      transform: scale(1.04);
+    }
+
+    /* --- Paket / Bundling --- */
+    .paket-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
+    .paket-card {
+      border-radius: var(--radius);
+      padding: 2rem;
+      border: 2px solid var(--clr-cream-dk);
+      background: var(--clr-white);
+      text-align: center;
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+      position: relative;
+    }
+    .paket-card:hover {
+      border-color: var(--clr-primary);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-6px);
+    }
+    .paket-card.popular {
+      border-color: var(--clr-primary);
+      background: linear-gradient(145deg, #fff5f3, var(--clr-white));
+    }
+    .paket-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--clr-primary);
+      color: var(--clr-white);
+      font-size: .75rem;
+      font-weight: 700;
+      padding: .25rem 1rem;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+    .paket-card h3 {
+      font-family: var(--ff-heading);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--clr-dark);
+      margin-bottom: .5rem;
+    }
+    .paket-price {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--clr-primary);
+      font-family: var(--ff-heading);
+    }
+    .paket-price small { font-size: .9rem; color: var(--clr-muted); font-weight: 400; }
+    .paket-items {
+      list-style: none;
+      margin: 1.2rem 0;
+      text-align: left;
+    }
+    .paket-items li {
+      font-size: .88rem;
+      color: var(--clr-muted);
+      padding: .35rem 0;
+      border-bottom: 1px dashed var(--clr-cream-dk);
+    }
+    .paket-items li::before { content: '✓ '; color: var(--clr-primary); font-weight: 700; }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      .paket-grid { grid-template-columns: 1fr; }
+      .filter-bar__inner { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =====================================================
+       NAVBAR
+       ===================================================== -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar__logo">
+      Pempek <span>Mak Cik</span>
+    </a>
+    <button class="navbar__toggle" id="navToggle" aria-label="Buka menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar__links" id="navLinks">
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="menu.html" class="active">Menu</a></li>
+      <li><a href="about.html">Tentang Kami</a></li>
+      <li><a href="contact.html">Kontak</a></li>
+      <li>
+        <a href="https://wa.me/6285311451127?text=Halo%20Mak%20Cik,%20saya%20mau%20pesan%20pempek!"
+           target="_blank" class="navbar__cta">📲 Pesan Sekarang</a>
+      </li>
+    </ul>
+  </nav>
+
+
+  <!-- =====================================================
+       PAGE HEADER — banner atas halaman menu
+       ===================================================== -->
+  <header class="page-header">
+    <span class="page-header__label">Pilihan Terkomplit</span>
+    <h1>Menu Pempek MADE</h1>
+    <p>Dibuat segar setiap hari dari bahan pilihan berkualitas tinggi dan segar</p>
+  </header>
+
+
+  <!-- =====================================================
+       DAFTAR MENU — isi utama halaman
+       ===================================================== -->
+  <main class="menu-section">
+    <div class="container">
+
+      <!-- ── Kategori: Pempek ───────────────────────────── -->
+      <h2 class="category-title" data-cat-title="pempek">🐟 Aneka Pempek</h2>
+      <div class="menu-grid" data-category="pempek">
+
+        <!-- Item 1 -->
+        <div class="card">
+          <div class="card__img-wrap">
+            <img class="card__img"
+                 src="gambar.jpg/pempek-selam.jpg"
+                 alt="Pempek Kapal Selam" />
+            <span class="card__badge">⭐ Terlaris</span>
+          </div>
+          <div class="card__body">
+            <h3 class="card__name">Pempek Kapal Selam</h3>
+            <p class="card__desc">Pempek isi satu butir telur ayam, bentuk bulat besar. Digoreng renyah dan disajikan dengan kuah cuko pedas manis.</p>
+            <div class="card__footer">
+              <div>
+                <div class="card__price">Rp 12.000 <small>/ buah</small></div>
+              </div>
+              <a class="card__order"
+                 href="https://wa.me/6285311451127?text=Halo%20Mak%20Cik,%20saya%20mau%20pesan%20Pempek%20Kapal%20Selam!"
+                 target="_blank">📲 Pesan</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="card">
+          <div class="card__img-wrap">
+            <img class="card__img"
+                 src="gambar.jpg/pempek lenjer.jpg"
+                 alt="Pempek Lenjer" />
+          </div>
+          <div class="card__body">
+            <h3 class="card__name">Pempek Lenjer Besar</h3>
+            <p class="card__desc">Pempek silinder panjang tanpa isi. Tekstur kenyal sempurna dengan aroma ikan tenggiri yang kuat dan gurih.</p>
+            <div class="card__footer">
+              <div class="card__price">Rp 8.000 <small>/ buah</small></div>
+              <a class="card__order"
+                 href="https://wa.me/6285311451127?text=Halo%20Mak%20Cik,%20saya%20mau%20pesan%20Pempek%20Lenjer!"
+                 target="_blank">📲 Pesan</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="card">
+          <div class="card__img-wrap">
+            <img class="card__img"
+                 src="gambar.jpg/Pmpk_Smbl.jpg  "
+                 alt="Samba" />
+            <span class="card__badge">⭐ Favorit</span>
+          </div>
+          <div class="card__body">
+            <h3 class="card__name">Pempek Sambal</h3>
+            <p class="card__desc">Pempek yang di lapisi sambal yang pedas</p>
+            <div class="card__footer">
+              <div class="card__price">Rp 10.000 <small>/ porsi </small></div>
+              <a class="card__order"
+                 href="https://wa.me/6285311451127?text=Halo%20Mak%20Cik,%20saya%20mau%20pesan%20Pempek%20Adaan!"
+                 target="_blank">📲 Pesan</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="card">
+          <div class="card__img-wrap">
+            <img class="card__img"
+                 src="gambar.jpg/lenggang.jpg"
+                 alt="Lenggang" />
+          </div>
+          <div class="card__body">
+            <h3 class="card__name">Lenggang </h3>
+            <p class="card__desc">Pempek panggang isi ebi (udang kering), disajikan dengan sambal cuko dan irisan mentimun segar.</p>
+            <div class="card__footer">
+              <div class="card__price">Rp 7.000 <small>/ buah</small></div>
+              <a class="card__order"
+                 href="https://wa.me/6285311451127?text=Halo%20Mak%20Cik,%20saya%20mau%20pesan%20Pempek%20Tunu!"
+                 target="_blank">📲 Pesan</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 5 -->
+        <div class="card">
+          <div class="card__img-wrap">
+            <img class="card__img"
+                 src="gambar.jpg/pempek telur.jpg"
+                 alt="Tekwan" />
+          </div>
+          <div class="card__body">
+            <h3 class="card__name">Tekwan</h3>
+            <p class="card__desc">Sup pempek bulat kecil dengan kuah udang yang gurih, dilengkapi jamur kuping, bengkuang, dan bihun.</p>
+            <div class="card__footer">
+              <div class="card__price">Rp 18.000 <small>/ porsi</small></div>
+              <a class="card__order"
+                 href="https://wa.me/6285311451127?text=Halo%20Mak%20Cik,%20saya%20mau%20pesan%20Tekwan!"
+                 target="_blank">📲 Pesan</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 6 -->
+        <div class="card">
+          <div class="card__img-wrap">
+            <img class="card__img"
+                 src="gambar.jpg/adaan.jpg"
+                 alt="Model" />
+          </div>
+          <div class="card__body">
+            <h3 class="card__name">Model</h3>
+            <p class="card__desc">Pempek isi tahu dengan kuah y ang kaya rasa, tambahan irisan timun, ebi, dan bawang goreng.</p>
+            <div class="card__footer">
+              <div class="card__price">Rp 20.000 <small>/ porsi</small></div>
+              <a class="card__order"
+                 href="https://wa.me/6285311451127?text=Halo%20Mak%20Cik,%20saya%20mau%20pesan%20Model!"
+                 target="_blank">📲 Pesan</a>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+    
+
+    </div><!-- /container -->
+  </main><!-- /menu-section -->
+
+
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <h3>Pempek MADE</h3>
+          <p>Menghadirkan cita rasa Pempek Talang Belido yang autentik dan sedap sejak tahun 2025.</p>
+        </div>
+        <div class="footer__col">
+          <h4>Navigasi</h4>
+          <a href="index.html">Beranda</a>
+          <a href="menu.html">Menu Kami</a>
+          <a href="about.html">Tentang Kami</a>
+          <a href="contact.html">Kontak</a>
+        </div>
+        <div class="footer__col">
+          <h4>Kontak</h4>
+          <a href="https://wa.me/6285311451127" target="_blank">📲 0853-1145-1127</a>
+          <a href="#">📍 Jl. Hayam Wuruk No. 12, Jambi</a>
+          <a href="#">🕐 Buka: 08.00 – 20.00 WIB</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2025 <span>Pempek MADE</span>. Hak Cipta Dilindungi.</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- =====================================================
+       SCRIPT — navbar mobile & filter kategori menu
+       ===================================================== -->
+  <script>
+    // Toggle navbar mobile
+    const toggle = document.getElementById('navToggle');
+    const links  = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+
+    // Filter kategori menu
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Aktifkan tombol yang diklik
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const cat = btn.dataset.cat;
+
+        // Tampilkan/sembunyikan grid berdasarkan kategori
+        document.querySelectorAll('.menu-grid, .paket-grid').forEach(grid => {
+          const gridCat = grid.dataset.category;
+          const isMatch = cat === 'all' || gridCat === cat;
+          grid.style.display = isMatch ? 'grid' : 'none';
+        });
+
+        // Tampilkan/sembunyikan judul kategori
+        document.querySelectorAll('.category-title').forEach(title => {
+          const titleCat = title.dataset.catTitle;
+          const isMatch = cat === 'all' || titleCat === cat;
+          title.style.display = isMatch ? 'flex' : 'none';
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

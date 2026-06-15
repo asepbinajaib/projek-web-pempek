@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tentang Kami — Pempek MADE</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- =====================================================
+       CSS Khusus Halaman About
+       Layout: Story zigzag + Timeline + Team + Values
+       ===================================================== -->
+  <style>
+
+    /* --- Page Header --- */
+    .page-header {
+      padding: 130px 0 80px;
+      background: var(--clr-cream-dk);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .page-header__text .section-label { font-size: 1.1rem; }
+    .page-header__text h1 {
+      font-family: var(--ff-heading);
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--clr-dark);
+      margin: .5rem 0 1.2rem;
+    }
+    .page-header__text p {
+      color: var(--clr-muted);
+      font-size: 1.05rem;
+      max-width: 420px;
+    }
+
+    /* Foto owner di header */
+    .page-header__img {
+      position: relative;
+    }
+    .header-photo {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 1;
+      border-radius: var(--radius);
+      object-fit: cover;
+      box-shadow: var(--shadow-lg);
+      border: 6px solid var(--clr-white);
+    }
+    /* Label "Founder" melayang */
+    .header-chip {
+      position: absolute;
+      bottom: -16px;
+      right: 10%;
+      background: var(--clr-primary);
+      color: var(--clr-white);
+      padding: .7rem 1.3rem;
+      border-radius: var(--radius);
+      font-size: .9rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-md);
+    }
+    .header-chip span {
+      display: block;
+      font-size: .75rem;
+      font-weight: 400;
+      opacity: .8;
+    }
+
+    /* Dekorasi garis */
+    .page-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--clr-primary), var(--clr-accent), var(--clr-brown));
+    }
+
+
+    /* --- CERITA / STORY — Zigzag Layout --- */
+    .story { padding: 90px 0; }
+    .story__block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-bottom: 5rem;
+    }
+    /* Blok genap: balik urutan */
+    .story__block:nth-child(even) .story__text { order: 2; }
+    .story__block:nth-child(even) .story__visual { order: 1; }
+
+    .story__text .section-label { font-size: 1rem; }
+    .story__text h2 {
+      font-family: var(--ff-heading);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 900;
+      color: var(--clr-dark);
+      margin: .4rem 0 1rem;
+      line-height: 1.2;
+    }
+    .story__text p {
+      color: var(--clr-muted);
+      font-size: .97rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    /* Foto cerita */
+    .story__img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+    }
+    /* Ornamen angka tahun di atas gambar */
+    .story__year {
+      font-family: var(--ff-heading);
+      font-size: 5rem;
+      font-weight: 900;
+      color: rgba(192,57,43,.08);
+      position: absolute;
+      top: -1.5rem;
+      right: -1rem;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+    .story__visual { position: relative; }
+
+
+    /* --- NILAI / VALUES --- */
+    .values { background: var(--clr-dark); padding: 90px 0; }
+    .values__header { text-align: center; margin-bottom: 3rem; }
+    .values__header .section-title { color: var(--clr-white); }
+
+    .values__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .value-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      transition: border-color var(--transition), background var(--transition);
+    }
+    .value-card:hover {
+      border-color: var(--clr-primary);
+      background: rgba(192,57,43,.08);
+    }
+    .value-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .value-card h3 {
+      font-family: var(--ff-heading);
+      font-size: 1.1rem;
+      color: var(--clr-white);
+      margin-bottom: .5rem;
+    }
+    .value-card p { font-size: .87rem; color: rgba(255,255,255,.5); line-height: 1.6; }
+
+
+    /* --- TIMELINE PERJALANAN --- */
+    .timeline-section { padding: 90px 0; background: var(--clr-cream-dk); }
+    .timeline-section__header { text-align: center; margin-bottom: 3.5rem; }
+
+    /* Garis tengah timeline */
+    .timeline {
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--clr-primary), var(--clr-accent));
+      transform: translateX(-50%);
+    }
+
+    .tl-item {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      align-items: flex-start;
+    }
+    /* Nomor ganjil: konten kiri, titik kanan */
+    .tl-item:nth-child(odd) {
+      flex-direction: row-reverse;
+      text-align: right;
+    }
+    .tl-item:nth-child(odd) .tl-content { align-items: flex-end; }
+
+    .tl-dot {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--clr-primary);
+      color: var(--clr-white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem;
+      font-weight: 700;
+      box-shadow: 0 0 0 4px var(--clr-cream-dk), 0 0 0 6px var(--clr-primary);
+      z-index: 1;
+      position: relative;
+    }
+
+    .tl-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .tl-year {
+      font-family: var(--ff-accent);
+      font-size: 1.3rem;
+      color: var(--clr-accent);
+      margin-bottom: .2rem;
+    }
+    .tl-content h4 {
+      font-family: var(--ff-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--clr-dark);
+      margin-bottom: .4rem;
+    }
+    .tl-content p { font-size: .87rem; color: var(--clr-muted); line-height: 1.6; }
+
+
+    /* --- TIM / TEAM --- */
+    .team { padding: 90px 0; }
+    .team__header { text-align: center; margin-bottom: 3rem; }
+    .team__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .team-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      background: var(--clr-white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .team-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+    .team-card__photo {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 1rem;
+      border: 4px solid var(--clr-cream-dk);
+    }
+    .team-card h3 {
+      font-family: var(--ff-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--clr-dark);
+      margin-bottom: .2rem;
+    }
+    .team-card__role {
+      font-size: .82rem;
+      color: var(--clr-primary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: .8rem;
+    }
+    .team-card p { font-size: .87rem; color: var(--clr-muted); line-height: 1.6; }
+
+
+    /* --- Responsive --- */
+    @media (max-width: 900px) {
+      .values__grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .page-header__inner { grid-template-columns: 1fr; }
+      .page-header__img { display: none; }
+      .story__block { grid-template-columns: 1fr; }
+      .story__block:nth-child(even) .story__text,
+      .story__block:nth-child(even) .story__visual { order: unset; }
+      .values__grid { grid-template-columns: 1fr; }
+      .team__grid { grid-template-columns: 1fr; }
+      .timeline::before { left: 22px; transform: none; }
+      .tl-item, .tl-item:nth-child(odd) {
+        flex-direction: row;
+        text-align: left;
+      }
+      .tl-item:nth-child(odd) .tl-content { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =====================================================
+       NAVBAR
+       ===================================================== -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar__logo">
+      Pempek <span>MADE</span>
+    </a>
+    <button class="navbar__toggle" id="navToggle" aria-label="Buka menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar__links" id="navLinks">
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="about.html" class="active">Tentang Kami</a></li>
+      <li><a href="contact.html">Kontak</a></li>
+      <li>
+        <a href="https://wa.me/6285311451127?text=Halo%20Mak%20Cik,%20saya%20mau%20pesan%20pempek!"
+           target="_blank" class="navbar__cta">📲 Pesan Sekarang</a>
+      </li>
+    </ul>
+  </nav>
+
+
+  <!-- =====================================================
+       PAGE HEADER — banner dengan foto
+       ===================================================== -->
+  <header class="page-header">
+    <div class="container">
+      <div class="page-header__inner">
+        <!-- Teks kiri -->
+        <div class="page-header__text">
+          <span class="section-label">Dapur Penuh Inovasi & Cita Rasa</span>
+          <h1>Dapur Penuh<br>Cerita & Tradisi</h1>
+          <p>
+            Berawal dari kecintaan terhadap kuliner khas Indonesia, Pempek MADE hadir pada tahun 2025 dengan konsep yang berbeda. Kami menghadirkan pempek tanpa ikan yang tetap lezat, kenyal, dan kaya rasa sehingga dapat dinikmati oleh lebih banyak kalangan.
+          </p>
+        </div>
+
+        <!-- Foto kanan -->
+        <div class="page-header__img">
+          <img class="header-photo"
+               src="https://placehold.co/420x420/C0392B/FDF6EC?text=MADE+Founder"
+               alt="Pendiri Pempek MADE" />
+          <div class="header-chip">
+            Ibu Bagoosh
+            <span>Pendiri & Kepala Dapur</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- =====================================================
+       CERITA — narasi perjalanan bisnis (zigzag)
+       ===================================================== -->
+  <section class="section story">
+    <div class="container">
+
+      <!-- Blok 1: Awal Mula -->
+      <div class="story__block">
+        <div class="story__text">
+          <span class="section-label">Bagaimana Semuanya Bermula</span>
+          <h2>Awal Perjalanan   </h2>
+          <p>
+           Pempek MADE berdiri pada tahun 2025 dengan semangat menghadirkan alternatif pempek yang unik tanpa menggunakan ikan. Berbekal eksperimen resep dan dukungan keluarga, usaha ini mulai melayani pelanggan di Kota Jambi dan sekitarnya.
+          </p>
+        </div>
+        <div class="story__visual">
+          <span class="story__year">2025</span>
+          <img class="story__img"
+               src="https://placehold.co/520x390/6B3A2A/FDF6EC?text=Awal+Berdiri+2025"
+               alt="Pempek MADE awal berdiri 2025" />
+        </div>
+      </div>
+
+      <!-- Blok 2: Berkembang -->
+      <div class="story__block">
+        <div class="story__visual">
+          <span class="story__year">2025</span>
+          <img class="story__img"
+               src="https://placehold.co/520x390/D4860A/1C0F0A?text=Toko+Pertama+2025"
+               alt="Toko pertama Pempek MADE" />
+        </div>
+        <div class="story__text">
+          <span class="section-label">Milestone Besar</span>
+          <h2>Membuka Toko Pertama</h2>
+          <p>
+            Pada tahun 2025, dengan tabungan selama 7 tahun berjualan keliling,
+            MADE akhirnya membuka toko fisik pertamanya di Desa Talang Belido, RT 05/RW 00
+            yang hingga kini masih menjadi lokasi utama kami.
+          </p>
+          <p>
+            Toko kecil ini dengan cepat menjadi destinasi kuliner favorit warga Jambi
+            yang rindu cita rasa Palembang yang sesungguhnya.
+          </p>
+        </div>
+      </div>
+
+      <!-- Blok 3: Regenerasi -->
+      <div class="story__block">
+        <div class="story__text">
+          <span class="section-label">Estafet Generasi</span>
+          <h2>Diteruskan dengan Penuh Semangat</h2>
+          <p>
+            Kini bisnis ini dikelola bersama anak-anak MADE yang turut membawa
+            inovasi dalam hal pelayanan digital dan kemasan, tanpa pernah mengubah
+            satu pun resep asli yang telah membuat ribuan pelanggan jatuh cinta.
+          </p>
+          <p>
+            Kami percaya bahwa kelezatan sejati lahir dari bahan segar, tangan yang sabar,
+            dan hati yang ikhlas — itulah filosofi yang kami pegang teguh hingga hari ini.
+          </p>
+          <a href="contact.html" class="btn btn-primary" style="margin-top:.5rem;">
+            📍 Kunjungi Kami
+          </a>
+        </div>
+        <div class="story__visual">
+          <span class="story__year">2024</span>
+          <img class="story__img"
+               src="https://placehold.co/520x390/922B21/FDF6EC?text=Generasi+Baru+2024"
+               alt="Tim Pempek MADE generasi baru" />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       NILAI — values perusahaan
+       ===================================================== -->
+  <section class="values">
+    <div class="container">
+      <div class="values__header">
+        <span class="section-label">Yang Kami Pegang</span>
+        <h2 class="section-title" style="color:var(--clr-white);">Nilai-Nilai <span>Kami</span></h2>
+      </div>
+      <div class="values__grid">
+        <div class="value-card">
+          <span class="value-icon">🤝</span>
+          <h3>Kejujuran</h3>
+          <p>Setiap bahan yang kami gunakan adalah yang terbaik, tidak pernah kami kompromikan.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">❤️</span>
+          <h3>Passion</h3>
+          <p>Memasak bukan sekadar pekerjaan, melainkan ekspresi cinta yang hadir di setiap hidangan.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">🌿</span>
+          <h3>Kualitas</h3>
+          <p>Standar kualitas kami tidak pernah turun, dari bahan baku hingga penyajian.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">🏘️</span>
+          <h3>Komunitas</h3>
+          <p>Kami tumbuh bersama komunitas lokal, mendukung petani dan nelayan setempat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       TIMELINE — perjalanan bisnis
+       ===================================================== -->
+  <section class="timeline-section">
+    <div class="container">
+      <div class="timeline-section__header">
+        <span class="section-label">Perjalanan Kami</span>
+        <h2 class="section-title">Lebih dari <span>1 Tahun</span> Berkarya</h2>
+      </div>
+
+      <div class="timeline">
+        <!-- Item 1 -->
+        <div class="tl-item">
+          <div class="tl-dot">🏠</div>
+          <div class="tl-content">
+            <span class="tl-year">2025</span>
+            <h4>Mulai Berjualan dari Rumah</h4>
+            <p>MADE memulai usaha dari dapur sendiri, melayani tetangga dengan modal Rp 200.000.</p>
+          </div>
+        </div>
+        <!-- Item 2 -->
+        <div class="tl-item">
+          <div class="tl-dot">🏪</div>
+          <div class="tl-content">
+            <span class="tl-year">2005</span>
+            <h4>Toko Fisik Pertama</h4>
+            <p>Membuka gerai di Desa Talang Belido, RT 05/RW 00 dan mulai melayani ratusan pelanggan setiap hari.</p>
+          </div>
+        </div>
+        <!-- Item 3 -->
+        <div class="tl-item">
+          <div class="tl-dot">🏆</div>
+          <div class="tl-content">
+            <span class="tl-year">2012</span>
+            <h4>Penghargaan UMKM Terbaik</h4>
+            <p>Meraih penghargaan UMKM Kuliner Terbaik tingkat Kota Jambi dari Dinas Perdagangan.</p>
+          </div>
+        </div>
+        <!-- Item 4 -->
+        <div class="tl-item">
+          <div class="tl-dot">📱</div>
+          <div class="tl-content">
+            <span class="tl-year">2020</span>
+            <h4>Masuk Dunia Digital</h4>
+            <p>Mulai menerima pemesanan online via WhatsApp dan platform marketplace lokal.</p>
+          </div>
+        </div>
+        <!-- Item 5 -->
+        <div class="tl-item">
+          <div class="tl-dot">🚀</div>
+          <div class="tl-content">
+            <span class="tl-year">2025</span>
+            <h4>Ekspansi & Inovasi</h4>
+            <p>Meluncurkan website resmi, layanan catering, dan varian menu baru untuk generasi muda.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       TIM — anggota tim
+       ===================================================== -->
+  <section class="section team">
+    <div class="container">
+      <div class="team__header">
+        <span class="section-label">Orang-Orang di Balik Dapur</span>
+        <h2 class="section-title">Tim <span>Kami</span></h2>
+      </div>
+      <div class="team__grid">
+        <!-- Anggota 1 -->
+        <div class="team-card">
+          <img class="team-card__photo"
+               src="https://placehold.co/100x100/C0392B/FDF6EC?text=MC"
+               alt="MADE" />
+          <h3>Bagooners</h3>
+          <div class="team-card__role">Founder & Head Chef</div>
+          <p>Pemegang resep rahasia dan penjaga tradisi yang sudah 1 tahun berdedikasi di dunia kuliner.</p>
+        </div>
+        <!-- Anggota 2 -->
+        <div class="team-card">
+          <img class="team-card__photo"
+               src="https://placehold.co/100x100/D4860A/1C0F0A?text=RA"
+               alt="Rizky Andrian" />
+          <h3>Goontors</h3>
+          <div class="team-card__role">Manajer Operasional</div>
+          <p>Anak pertama Bagoosh yang mengelola operasional harian dan pengembangan bisnis.</p>
+        </div>
+        <!-- Anggota 3 -->
+        <div class="team-card">
+          <img class="team-card__photo"
+               src="https://placehold.co/100x100/6B3A2A/FDF6EC?text=DS"
+               alt="Dian Sari" />
+          <h3> Kiky </h3>
+          <div class="team-card__role">Chef & Quality Control</div>
+          <p>Memastikan setiap pempek yang keluar dari dapur kami memenuhi standar kualitas MADE.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <h3>Pempek MADE</h3>
+          <p>Menghadirkan cita rasa Pempek Palembang yang autentik dan lezat sejak tahun 2025.</p>
+        </div>
+        <div class="footer__col">
+          <h4>Navigasi</h4>
+          <a href="index.html">Beranda</a>
+          <a href="menu.html">Menu Kami</a>
+          <a href="about.html">Tentang Kami</a>
+          <a href="contact.html">Kontak</a>
+        </div>
+        <div class="footer__col">
+          <h4>Kontak</h4>
+          <a href="https://wa.me/6285311451127" target="_blank">📲 0853-1145-1127</a>
+          <a href="#">📍 Jl. Talang Belido, Jambi</a>
+          <a href="#">🕐 Buka: 08.00 – 20.00 WIB</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2025 <span>Pempek MADE</span>. Hak Cipta Dilindungi.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT — toggle navbar mobile -->
+  <script>
+    const toggle = document.getElementById('navToggle');
+    const links  = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+  </script>
+
+</body>
+</html>

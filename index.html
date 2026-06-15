@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pempek MADE — Cita Rasa Talang Belido Asli</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- =====================================================
+       Tambahan CSS khusus halaman Home
+       ===================================================== -->
+  <style>
+    /* --- HERO SECTION --- */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding-top: 100px; /* tinggi navbar */
+      background: var(--clr-cream);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Lingkaran dekoratif latar belakang */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(192,57,43,.08) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Konten teks hero */
+    .hero__content {
+      padding: 5% 5% 5% 10%;
+      animation: fadeUp .8s ease both;
+    }
+
+    .hero__tag {
+      display: inline-block;
+      background: rgba(192,57,43,.1);
+      color: var(--clr-primary);
+      font-size: .85rem;
+      font-weight: 600;
+      padding: .3rem .9rem;
+      border-radius: 50px;
+      margin-bottom: 1.2rem;
+      letter-spacing: .5px;
+    }
+
+    .hero__title {
+      font-family: var(--ff-heading);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--clr-dark);
+      margin-bottom: 1.2rem;
+    }
+    .hero__title em {
+      color: var(--clr-primary);
+      font-style: italic;
+    }
+
+    .hero__desc {
+      font-size: 1.05rem;
+      color: var(--clr-muted);
+      max-width: 440px;
+      margin-bottom: 2rem;
+    }
+
+    .hero__actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* Statistik singkat */
+    .hero__stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--clr-cream-dk);
+    }
+    .stat__num {
+      font-family: var(--ff-heading);
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--clr-primary);
+      display: block;
+    }
+    .stat__label {
+      font-size: .8rem;
+      color: var(--clr-muted);
+      font-weight: 500;
+    }
+
+    /* Gambar hero */
+    .hero__image {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeLeft .9s .2s ease both;
+    }
+
+    /* Frame foto utama */
+    .hero__img-wrap {
+      width: 90%;
+      max-width: 500px;
+      aspect-ratio: 4/5;
+      border-radius: 40% 60% 55% 45% / 50% 45% 55% 50%;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 5px solid var(--clr-cream);
+    }
+    .hero__img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    /* Badge melayang */
+    .hero__badge {
+      position: absolute;
+      bottom: 15%;
+      left: 0;
+      background: var(--clr-white);
+      border-radius: var(--radius);
+      padding: .9rem 1.2rem;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    .hero__badge-icon { font-size: 2rem; }
+    .hero__badge strong {
+      display: block;
+      font-size: .9rem;
+      color: var(--clr-dark);
+    }
+    .hero__badge span {
+      font-size: .78rem;
+      color: var(--clr-muted);
+    }
+
+    /* Dekorasi garis aksen */
+    .hero__deco {
+      position: absolute;
+      top: 20%;
+      right: -20px;
+      width: 80px; height: 80px;
+      border: 3px solid var(--clr-accent);
+      border-radius: 50%;
+      opacity: .3;
+    }
+
+    /* --- MENGAPA KAMI --- */
+    .why {
+      background: var(--clr-cream-dk);
+    }
+    .why__header { text-align: center; margin-bottom: 3rem; }
+
+    .why__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .why__card {
+      background: var(--clr-white);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
+      border-bottom: 3px solid transparent;
+    }
+    .why__card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-md);
+      border-bottom-color: var(--clr-primary);
+    }
+
+    .why__card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .why__card h3 {
+      font-family: var(--ff-heading);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--clr-dark);
+      margin-bottom: .6rem;
+    }
+    .why__card p { font-size: .9rem; color: var(--clr-muted); }
+
+    /* --- MENU UNGGULAN (Preview) --- */
+    .featured__header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .featured__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .menu-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--clr-white);
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .menu-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .menu-card__img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+    }
+
+    .menu-card__body { padding: 1.2rem; }
+    .menu-card__name {
+      font-family: var(--ff-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--clr-dark);
+      margin-bottom: .3rem;
+    }
+    .menu-card__desc {
+      font-size: .85rem;
+      color: var(--clr-muted);
+      margin-bottom: .8rem;
+    }
+    .menu-card__price {
+      font-weight: 700;
+      color: var(--clr-primary);
+      font-size: 1rem;
+    }
+
+    /* --- TESTIMONI --- */
+    .testi { background: var(--clr-brown); color: var(--clr-white); }
+
+    .testi__header { text-align: center; margin-bottom: 2.5rem; }
+    .testi__header .section-title { color: var(--clr-white); }
+
+    .testi__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .testi__card {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      padding: 1.8rem;
+      transition: background var(--transition);
+    }
+    .testi__card:hover { background: rgba(255,255,255,.14); }
+
+    .testi__stars { color: var(--clr-accent); font-size: 1rem; margin-bottom: .8rem; }
+    .testi__text {
+      font-style: italic;
+      font-size: .95rem;
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+      color: rgba(255,255,255,.85);
+    }
+    .testi__author { display: flex; align-items: center; gap: .8rem; }
+    .testi__avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--clr-primary);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      color: var(--clr-white);
+    }
+    .testi__name { font-weight: 600; font-size: .9rem; }
+    .testi__loc { font-size: .78rem; color: rgba(255,255,255,.5); }
+
+    /* --- CTA BANNER --- */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--clr-primary) 0%, var(--clr-primary-dk) 100%);
+      padding: 80px 0;
+      text-align: center;
+      color: var(--clr-white);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-banner::before {
+      content: '🐟';
+      position: absolute;
+      font-size: 12rem;
+      opacity: .06;
+      top: -20px; right: -20px;
+      transform: rotate(-15deg);
+      pointer-events: none;
+    }
+    .cta-banner h2 {
+      font-family: var(--ff-heading);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 900;
+      margin-bottom: 1rem;
+    }
+    .cta-banner p {
+      font-size: 1rem;
+      opacity: .85;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+    }
+    .btn-white {
+      background: var(--clr-white);
+      color: var(--clr-primary);
+      font-weight: 700;
+    }
+    .btn-white:hover {
+      background: var(--clr-cream);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+
+    /* --- ANIMASI --- */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeLeft {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    /* --- Responsive Mobile --- */
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-top: 100px;
+      }
+      .hero__content { padding: 2rem 5%; }
+      .hero__desc { margin: 0 auto 2rem; }
+      .hero__actions { justify-content: center; }
+      .hero__stats { justify-content: center; }
+      .hero__image { display: none; } /* sembunyikan gambar di mobile */
+      .why__grid,
+      .featured__grid,
+      .testi__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =====================================================
+       NAVBAR — navigasi global
+       ===================================================== -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar__logo">
+      Pempek <span>MADE</span>
+    </a>
+
+    <!-- Hamburger untuk mobile -->
+    <button class="navbar__toggle" id="navToggle" aria-label="Buka menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="navbar__links" id="navLinks">
+      <li><a href="index.html" class="active">Beranda</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="about.html">Tentang Kami</a></li>
+      <li><a href="contact.html">Kontak</a></li>
+      <!-- Tombol pesan langsung via WhatsApp -->
+      <li>
+        <a href="https://wa.me/6285311451127?text=Halo%20Mak%20Cik,%20saya%20mau%20pesan%20pempek!"
+           target="_blank" class="navbar__cta">📲 Pesan Sekarang</a>
+      </li>
+    </ul>
+  </nav>
+
+
+  <!-- =====================================================
+       HERO — bagian utama halaman home
+       ===================================================== -->
+  <section class="hero">
+    <!-- Konten teks kiri -->
+    <div class="hero__content">
+      <span class="hero__tag">🏆 Asli Pempek dari Talang Belido 2025</span>
+
+      <h1 class="hero__title">
+        Pempek <em>Maknyus</em><br>Langsung dari<br>Dapur MADE
+      </h1>
+
+      <p class="hero__desc">
+        Dibuat dari ikan tenggiri segar pilihan, diracik dengan resep turun temurun dari keluarga bagus.
+        Setiap gigitan membawa cita rasa Talang Belido yang autentik dan legit ke meja Anda.
+      </p>
+
+      <div class="hero__actions">
+        <a href="menu.html" class="btn btn-primary">🍽️ Lihat Menu</a>
+        <a href="https://wa.me/6285311451127?text=Halo%20MADE,%20aku%20mau%20pesan%20pempeknyaa!"
+           target="_blank" class="btn btn-wa">📲 Pesan via WhatsApp</a>
+      </div>
+
+      <!-- Statistik singkat -->
+      <div class="hero__stats">
+        <div>
+          <span class="stat__num">15+</span>
+          <span class="stat__label">Varian Menu</span>
+        </div>
+        <div>
+          <span class="stat__num">1 Th</span>
+          <span class="stat__label">Pengalaman</span>
+        </div>
+        <div>
+          <span class="stat__num">1500+</span>
+          <span class="stat__label">Pelanggan Puas</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gambar kanan -->
+    <div class="hero__image">
+      <div class="hero__deco"></div>
+
+      <!-- Foto utama menggunakan placeholder -->
+      <div class="hero__img-wrap">
+        <img src="gambar.jpg/Pmpk_Smbl.jpg"
+             alt="Pempek MADE - Pempek Talang Beldio Asli" />
+      </div>
+
+      <!-- Badge melayang -->
+      <div class="hero__badge">
+        <div class="hero__badge-icon">⭐</div>
+        <div>
+          <strong>4.9 / 5.0</strong>
+          <span>Rating Pelanggan</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       MENGAPA KAMI — keunggulan bisnis
+       ===================================================== -->
+  <section class="section why">
+    <div class="container">
+      <div class="why__header">
+        <span class="section-label">Kelebihan Kami</span>
+        <h2 class="section-title">Kenapa Pilih <span>Pempek Made</span>?</h2>
+      </div>
+
+      <div class="why__grid">
+        <!-- Kartu 1 -->
+        <div class="why__card">
+          <span class="why__card-icon">🐟</span>
+          <h3>Bahan Segar Pilihan</h3>
+          <p>Menggunakan ikan tenggiri segar yang dipilih langsung dari nelayan lokal setiap harinya dan sudah pasti segar.</p>
+        </div>
+        <!-- Kartu 2 -->
+        <div class="why__card">
+          <span class="why__card-icon">👩‍🍳</span>
+          <h3>Resep Turun-Temurun</h3>
+          <p>Diolah dengan resep rahasia keluarga bagus yang sudah diwariskan ke setiap generasinya.</p>
+        </div>
+        <!-- Kartu 3 -->
+        <div class="why__card">
+          <span class="why__card-icon">🚚</span>
+          <h3>Pesan Antar Cepat</h3>
+          <p>Layanan pesan antar tersedia ke seluruh area kota, langsung via WhatsApp dalam 60 menit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       MENU UNGGULAN — preview 3 menu favorit
+       ===================================================== -->
+  <section class="section">
+    <div class="container">
+      <div class="featured__header">
+        <div>
+          <span class="section-label">Menu Favorit</span>
+          <h2 class="section-title">Menu <span>Unggulan</span></h2>
+        </div>
+        <a href="menu.html" class="btn btn-outline">Lihat Semua Menu →</a>
+      </div>
+
+      <div class="featured__grid">
+        <!-- Kartu Menu 1 -->
+        <div class="menu-card">
+          <img class="menu-card__img"
+               src="gambar.jpg/Pmpk_Smbl.jpg"
+               alt="Pempek Sambal" />
+          <div class="menu-card__body">
+            <h3 class="menu-card__name">Pempek Sambal</h3>
+            <p class="menu-card__desc">Pempek isi telur bulat berukuran besar, disajikan dengan kuah cuko khas.</p>
+            <span class="menu-card__price">Rp 12.000</span>
+          </div>
+        </div>
+
+        <!-- Kartu Menu 2 -->
+        <div class="menu-card">
+          <img class="menu-card__img"
+               src="gambar.jpg/pempek-selam.jpg"
+               alt="Pempek Lenjer" />
+          <div class="menu-card__body">
+            <h3 class="menu-card__name">Pempek Selam</h3>
+            <p class="menu-card__desc">Pempek tanpa isi, tekstur kenyal sempurna dengan rasa ikan yang sangat kuat.</p>
+            <span class="menu-card__price">Rp 6.000</span>
+          </div>
+        </div>
+
+        <!-- Kartu Menu 3 -->
+        <div class="menu-card">
+          <img class="menu-card__img"
+               src="gambar.jpg/lenggang.jpg"
+               alt="Pempek Lenggang" />
+          <div class="menu-card__body">
+            <h3 class="menu-card__name">Pempek Lenggang</h3>
+            <p class="menu-card__desc">Pempek bulat goreng renyah dengan bumbu bawang putih dan santan pilihan.</p>
+            <span class="menu-card__price">Rp 5.000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       TESTIMONI — ulasan pelanggan
+       ===================================================== -->
+  <section class="section testi">
+    <div class="container">
+      <div class="testi__header">
+        <span class="section-label">Kata Pelanggan</span>
+        <h2 class="section-title">Mereka Sudah Membuktikannya</h2>
+      </div>
+
+      <div class="testi__grid">
+        <!-- Testimoni 1 -->
+        <div class="testi__card">
+          <div class="testi__stars">★★★★★</div>
+          <p class="testi__text">"Pempeknya enak banget cik, Cukonya gacor betul la, ikannya kerasa banget, pasti jadi langganan tetap!"</p>
+          <div class="testi__author">
+            <div class="testi__avatar">S</div>
+            <div>
+              <div class="testi__name">Goontor</div>
+              <div class="testi__loc">Nganjuk</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimoni 2 -->
+        <div class="testi__card">
+          <div class="testi__stars">★★★★★</div>
+          <p class="testi__text">"Lemak nian sumpah la, kalian wajib coba pemmpek disini ikannyo ngikan nian, cukonyo nyuko nian, dk salah aku langganan disini debes emang!"</p>
+          <div class="testi__author">
+            <div class="testi__avatar">A</div>
+            <div>
+              <div class="testi__name">Bagooners</div>
+              <div class="testi__loc">Talang Duku</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimoni 3 -->
+        <div class="testi__card">
+          <div class="testi__stars">★★★★☆</div>
+          <p class="testi__text">"Makan samo pacar emang paling enak di pempek made nian la, pelayanan jos, pempek jos semuanyo jos la pokoknyo !"</p>
+          <div class="testi__author">
+            <div class="testi__avatar">R</div>
+            <div>
+              <div class="testi__name">Julpin</div>
+              <div class="testi__loc">Jowo Borot</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       CTA BANNER — ajakan pesan
+       ===================================================== -->
+  <section class="cta-banner">
+    <div class="container">
+      <h2>Siap Menikmati Pempek Asli Palembang?</h2>
+      <p>Pesan sekarang via WhatsApp dan nikmati pempek segar langsung di rumah Anda hari ini!</p>
+      <a href="https://wa.me/6285311451127?text=Halo%20Mak%20Cik,%20saya%20mau%20pesan%20pempek!"
+         target="_blank" class="btn btn-white">📲 Pesan Sekarang via WhatsApp</a>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       FOOTER — bagian bawah halaman
+       ===================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <!-- Brand -->
+        <div class="footer__brand">
+          <h3>Pempek MADE</h3>
+          <p>ini cita rasa Pempek Asli Talang Belido yang mantep dan lezat sejak tahun 2025.</p>
+        </div>
+        <!-- Navigasi -->
+        <div class="footer__col">
+          <h4>Navigasi</h4>
+          <a href="index.html">Beranda</a>
+          <a href="menu.html">Menu Kami</a>
+          <a href="about.html">Tentang Kami</a>
+          <a href="contact.html">Kontak</a>
+        </div>
+        <!-- Kontak -->
+        <div class="footer__col">
+          <h4>Kontak</h4>
+          <a href="https://wa.me/6285311451127" target="_blank">📲 0853-1145-1127</a>
+          <a href="#">📍 Sungai Gelam, Desa Talang Belido,Jambi</a>
+          <a href="#">🕐 Buka: 08.00 – 20.00 WIB</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2025 <span>Pempek MADE</span>. Hak Cipta Dilindungi.</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- =====================================================
+       SCRIPT — toggle navbar mobile
+       ===================================================== -->
+  <script>
+    const toggle = document.getElementById('navToggle');
+    const links  = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+  </script>
+
+</body>
+</html>
